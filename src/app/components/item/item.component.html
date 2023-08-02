@@ -1,1 +1,24 @@
-<p>item works!</p>
+<div class="item" ngClass="{{item.amountInCart>0&&'addedInCart'}}">
+  <div class="img-container" (click)="editItemClicked()">
+    <img [src]="item.photo" />
+  </div>
+
+  <div class="text-container" (click)="editItemClicked()">
+    <div class="main">
+      <div class="name">{{ item.name }}</div>
+      <div class="serving">{{ item.servingSize }}</div>
+    </div>
+    <div class="price">{{ item.price + " EGP" }}</div>
+  </div>
+
+  <div class="cartOptions-container" (click)="$event.stopPropagation()">
+    <div class="add" (click)="addToCart()">+</div>
+
+    <div class="cartNumber">
+      <div class="number" *ngIf="item.amountInCart > 0">{{item.amountInCart}}</div>
+      <div class="line"></div>
+    </div>
+
+    <div class="subtract" (click)="subtractFromCart()">-</div>
+  </div>
+</div>

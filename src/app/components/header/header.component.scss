@@ -10,10 +10,11 @@ header{
 #hamburger-menu{
     cursor: pointer;
     div{
-        width: 24px;
+        width: 25px;
         height: 3px;
         background-color: #a5abb3;
         margin: 5px;
+        border-radius: 3px;
     }
 }
 

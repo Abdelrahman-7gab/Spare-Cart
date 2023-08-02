@@ -90,6 +90,7 @@ form{
         cursor: pointer;
         display: grid;
         place-items: center;
+        min-height: 100px;
 
         img{
             max-height: 300px;

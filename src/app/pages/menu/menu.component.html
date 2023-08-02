@@ -1,6 +1,9 @@
 <button (click)="openAddItemModal(null)">Add</button>
 
-<div class="item" *ngFor="let item of items$| async">
-    {{item.name}}
-    <img [src]="item.photo">
+<div class="items-container">
+  <app-item
+    *ngFor="let item of items$ | async"
+    [item]="item"
+    (editItem)="openAddItemModal($event)"
+  ></app-item>
 </div>

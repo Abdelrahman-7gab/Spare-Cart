@@ -38,6 +38,5 @@ export class MenuComponent {
       data: item
     });
   }
-  
 
 }

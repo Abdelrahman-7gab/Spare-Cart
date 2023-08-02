@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ItemModel } from '../interfaces/ItemModel';
 import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -56,13 +55,12 @@ export class ProductsService {
     }
   }
 
-  public removeFromCart(item: ItemModel) {
+  public subtractFromCart(item: ItemModel) {
     const items = this.items$.getValue();
     const index = items.findIndex((i) => i.id === item.id);
     if (items[index].amountInCart > 0) {
-      items[index].amountInStock =
-        items[index].amountInStock + items[index].amountInCart;
-      items[index].amountInCart = 0;
+      items[index].amountInStock++;
+      items[index].amountInCart--;
       this.items$.next(items);
     }
   }

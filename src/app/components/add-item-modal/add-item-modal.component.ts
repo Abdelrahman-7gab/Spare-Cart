@@ -23,7 +23,7 @@ export class AddItemModalComponent {
   form: FormGroup;
   modalTitle = 'Add Item';
 
-  englishPattern = /^[a-zA-Z]+$/;
+  englishPattern = /^(?!^\s*$)[a-zA-Z\s]+$/;
   numberPattern = /^[0-9]+$/;
 
   constructor(
@@ -73,7 +73,6 @@ export class AddItemModalComponent {
       // Add more form controls as needed...
     });
   }
-
   saveItem() {
     if (this.form.invalid) {
       return;
@@ -84,9 +83,9 @@ export class AddItemModalComponent {
     }
 
     const item: ItemModel = {
-      name: this.productName,
+      name: this.productName.trim(),
       price: this.price || 0,
-      servingSize: this.servingSize,
+      servingSize: this.servingSize.trim(),
       amountInStock: this.amountInStock || 0,
       amountInCart: this.amountInCart,
       photo: this.photo,
