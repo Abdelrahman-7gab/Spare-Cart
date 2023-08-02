@@ -18,8 +18,12 @@ form{
         height: 45px;
         background-color: #F7F7F7;
         font-weight: 400;
-        margin: 10px 0 15px 0;
+        margin: 10px 0 0 0;
         border: none;
+    }
+
+    label{
+        margin-top : 15px;
     }
 
 }
@@ -75,4 +79,20 @@ form{
     background: #ccc;
     color: #fff;
     cursor: not-allowed;
+}
+
+.img-container{
+    cursor: pointer;
+    display: grid;
+    button{
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+
+        img{
+            max-height: 300px;
+        }
+    }
 }

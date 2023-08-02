@@ -25,7 +25,7 @@ export class MenuComponent {
       item = {
         id: '',
         name: '',
-        photo: '',
+        photo: null,
         price: 0,
         servingSize: '',
         amountInStock: 0,

@@ -12,11 +12,12 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class AddItemModalComponent {
   productName: string;
-  price: number;
+  price: number | null;
   servingSize: string;
-  amountInStock: number;
+  amountInStock: number | null;
   amountInCart: number;
-  photo: string | ArrayBuffer | null;
+  selectedImage: File | null = null;
+  photo: string | ArrayBuffer | null | undefined;
   id: string;
 
   form: FormGroup;
@@ -41,6 +42,10 @@ export class AddItemModalComponent {
 
     if (this.id !== '') {
       this.modalTitle = 'Edit Item';
+    }
+    else{
+      this.amountInStock = null;
+      this.price = null;
     }
 
     this.form = this.fb.group({
@@ -69,7 +74,7 @@ export class AddItemModalComponent {
     });
   }
 
-  addItem() {
+  saveItem() {
     if (this.form.invalid) {
       return;
     }
@@ -77,17 +82,29 @@ export class AddItemModalComponent {
     if (this.id === '') {
       this.id = uuidv4();
     }
+
     const item: ItemModel = {
       name: this.productName,
-      price: this.price,
+      price: this.price || 0,
       servingSize: this.servingSize,
-      amountInStock: this.amountInStock,
+      amountInStock: this.amountInStock || 0,
       amountInCart: this.amountInCart,
       photo: this.photo,
       id: this.id,
     };
     this.productsService.addItem(item);
     this.closeModal();
+  }
+
+  onImageSelected(event: any) {
+    const selectedFile: File = event.target.files[0];
+    this.selectedImage = selectedFile;
+
+    if (selectedFile) {
+      const reader = new FileReader();
+      reader.onload = (e) => this.photo = e.target?.result;
+      reader.readAsDataURL(selectedFile);
+    }
   }
 
   closeModal() {

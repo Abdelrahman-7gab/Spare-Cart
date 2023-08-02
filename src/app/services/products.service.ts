@@ -19,6 +19,7 @@ export class ProductsService {
   }
 
   public addItem(item: ItemModel) {
+    console.log(item);
     const items = this.items$.getValue();
     // check if item id already exists in the list 
     if (items.find(i => i.id === item.id)) {

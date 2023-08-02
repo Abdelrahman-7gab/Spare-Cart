@@ -2,52 +2,55 @@
   <div class="modal-header">
     <!-- x button -->
     <button class="closeButton" (click)="closeModal()">
-        <img src="../../../assets/close.png">
+      <img src="../../../assets/close.png" />
     </button>
     <h3>{{ modalTitle }}</h3>
   </div>
-  <img src="../../../assets/watermelon.png" class="modal-img" />
+  <div class="img-container">
+    <input #fileUpload type="file" accept="image/*" (change)="onImageSelected($event)" style="display: none;">
+    <button class="uploadButton" (click)="fileUpload.click()">
+      <img [src]="photo==null?'../../../assets/addPhoto.png':photo">
+    </button>
+  </div>
 
-  <form [formGroup]="form" (ngSubmit)="addItem()">
+  <form [formGroup]="form" (ngSubmit)="saveItem()">
+    <label>Product Name</label>
+    <input [(ngModel)]="productName" matInput formControlName="name" required />
+    <mat-error
+      *ngIf="
+        form.controls['name'].invalid &&
+        form.controls['name'].hasError('pattern')
+      "
+    >
+      Name must be in English
+    </mat-error>
 
-      <label>Product Name</label>
-      <input matInput formControlName="name" required />
-      <mat-error
-        *ngIf="
-          form.controls['name'].invalid &&
-          form.controls['name'].hasError('pattern')
-        "
-      >
-        Name must be in English
-      </mat-error>
+    <label>Price</label>
+    <input [(ngModel)]="price" matInput formControlName="price" required />
+    <mat-error *ngIf="form.controls['price'].invalid">
+      <ng-container *ngIf="form.controls['price'].hasError('pattern')">
+        Price must be a positive number
+      </ng-container>
+    </mat-error>
 
+    <label>Serving Size</label>
+    <input [(ngModel)]="servingSize" matInput formControlName="servingSize" />
 
-      <label>Price</label>
-      <input matInput formControlName="price" required />
-      <mat-error *ngIf="form.controls['price'].invalid">
-        <ng-container *ngIf="form.controls['price'].hasError('pattern')">
-          Price must be a positive number
-        </ng-container>
-        <ng-container *ngIf="form.controls['price'].hasError('min')">
-          Price must be a positive number
-        </ng-container>
-      </mat-error>
+    <label>Inventory Left</label>
+    <input
+      [(ngModel)]="amountInStock"
+      matInput
+      formControlName="inventory"
+      required
+    />
+    <mat-error *ngIf="form.controls['inventory'].invalid">
+      <ng-container *ngIf="form.controls['inventory'].hasError('pattern')">
+        Inventory must be a positive number
+      </ng-container>
+    </mat-error>
 
-      <label>Serving Size</label>
-      <input matInput formControlName="servingSize" />
-
-
-      <label>Inventory Left</label>
-      <input matInput formControlName="inventory" required />
-      <mat-error *ngIf="form.controls['inventory'].invalid">
-        <ng-container *ngIf="form.controls['inventory'].hasError('pattern')">
-          Inventory must be a positive number
-        </ng-container>
-        <ng-container *ngIf="form.controls['inventory'].hasError('min')">
-          Inventory must be a positive number
-        </ng-container>
-      </mat-error>
-
-    <button type="submit" class="saveButton" [disabled]="form.invalid">SAVE</button>
+    <button type="submit" class="saveButton" [disabled]="form.invalid">
+      SAVE
+    </button>
   </form>
 </div>

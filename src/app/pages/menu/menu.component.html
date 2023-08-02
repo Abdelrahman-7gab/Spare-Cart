@@ -1,1 +1,6 @@
 <button (click)="openAddItemModal(null)">Add</button>
+
+<div class="item" *ngFor="let item of items$| async">
+    {{item.name}}
+    <img [src]="item.photo">
+</div>
