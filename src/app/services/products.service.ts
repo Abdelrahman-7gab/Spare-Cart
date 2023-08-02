@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ItemModel } from '../interfaces/ItemModel';
 import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ProductsService {
   private items$: BehaviorSubject<ItemModel[]>;
   private totalCartPrice$: BehaviorSubject<number>;
-  
+
   public getItems$() {
     return this.items$.asObservable();
   }
-  
+
   public getTotalCartPrice$() {
     return this.totalCartPrice$.asObservable();
   }
@@ -21,48 +21,47 @@ export class ProductsService {
   public addItem(item: ItemModel) {
     console.log(item);
     const items = this.items$.getValue();
-    // check if item id already exists in the list 
-    if (items.find(i => i.id === item.id)) {
+    // check if item id already exists in the list
+    if (items.find((i) => i.id === item.id)) {
       this.updateItem(item);
       return;
     }
     items.push(item);
     this.items$.next(items);
   }
-  
+
   public removeItem(item: ItemModel) {
     const items = this.items$.getValue();
-    const index = items.findIndex(i => i.id === item.id);
+    const index = items.findIndex((i) => i.id === item.id);
     items.splice(index, 1);
     this.items$.next(items);
   }
 
   public updateItem(item: ItemModel) {
-
     const items = this.items$.getValue();
-    const index = items.findIndex(i => i.id === item.id);
+    const index = items.findIndex((i) => i.id === item.id);
     items[index] = item;
     this.items$.next(items);
   }
 
   public addToCart(item: ItemModel) {
     const items = this.items$.getValue();
-    const index = items.findIndex(i => i.id === item.id);
-    if(items[index].amountInStock > 0){
+    const index = items.findIndex((i) => i.id === item.id);
+    if (items[index].amountInStock > 0) {
       items[index].amountInStock--;
       items[index].amountInCart++;
       this.items$.next(items);
-    }
-    else{
-      alert("There’s not enough of this item left.");
+    } else {
+      alert('There’s not enough of this item left.');
     }
   }
 
   public removeFromCart(item: ItemModel) {
     const items = this.items$.getValue();
-    const index = items.findIndex(i => i.id === item.id);
-    if(items[index].amountInCart > 0){
-      items[index].amountInStock = items[index].amountInStock + items[index].amountInCart;
+    const index = items.findIndex((i) => i.id === item.id);
+    if (items[index].amountInCart > 0) {
+      items[index].amountInStock =
+        items[index].amountInStock + items[index].amountInCart;
       items[index].amountInCart = 0;
       this.items$.next(items);
     }
@@ -70,7 +69,7 @@ export class ProductsService {
 
   public clearCart() {
     const items = this.items$.getValue();
-    items.forEach(item => {
+    items.forEach((item) => {
       item.amountInStock = item.amountInStock + item.amountInCart;
       item.amountInCart = 0;
     });
@@ -78,19 +77,28 @@ export class ProductsService {
   }
 
   constructor() {
-
     this.items$ = new BehaviorSubject<ItemModel[]>([]);
     this.totalCartPrice$ = new BehaviorSubject<number>(0);
 
     // update total price when items change
 
-    this.items$.subscribe(items => {
-      const totalPrice = items.reduce((acc, item) => acc + item.price * item.amountInCart, 0);
+    this.items$.subscribe((items) => {
+      const totalPrice = items.reduce(
+        (acc, item) => acc + item.price * item.amountInCart,
+        0
+      );
       this.totalCartPrice$.next(totalPrice);
+    });
+
+    // load items from local storage
+    const items = localStorage.getItem('items');
+    if (items) {
+      this.items$.next(JSON.parse(items));
     }
-    );
 
-   }
-
-   
+    // any changes to items will be saved to local storage
+    this.items$.subscribe((items) => {
+      localStorage.setItem('items', JSON.stringify(items));
+    });
+  }
 }
