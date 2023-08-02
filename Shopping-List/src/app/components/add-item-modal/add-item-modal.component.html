@@ -1,1 +1,53 @@
-<p>add-item-modal works!</p>
+<div class="modal-container">
+  <div class="modal-header">
+    <!-- x button -->
+    <button class="closeButton" (click)="closeModal()">
+        <img src="../../../assets/close.png">
+    </button>
+    <h3>{{ modalTitle }}</h3>
+  </div>
+  <img src="../../../assets/watermelon.png" class="modal-img" />
+
+  <form [formGroup]="form" (ngSubmit)="addItem()">
+
+      <label>Product Name</label>
+      <input matInput formControlName="name" required />
+      <mat-error
+        *ngIf="
+          form.controls['name'].invalid &&
+          form.controls['name'].hasError('pattern')
+        "
+      >
+        Name must be in English
+      </mat-error>
+
+
+      <label>Price</label>
+      <input matInput formControlName="price" required />
+      <mat-error *ngIf="form.controls['price'].invalid">
+        <ng-container *ngIf="form.controls['price'].hasError('pattern')">
+          Price must be a positive number
+        </ng-container>
+        <ng-container *ngIf="form.controls['price'].hasError('min')">
+          Price must be a positive number
+        </ng-container>
+      </mat-error>
+
+      <label>Serving Size</label>
+      <input matInput formControlName="servingSize" />
+
+
+      <label>Inventory Left</label>
+      <input matInput formControlName="inventory" required />
+      <mat-error *ngIf="form.controls['inventory'].invalid">
+        <ng-container *ngIf="form.controls['inventory'].hasError('pattern')">
+          Inventory must be a positive number
+        </ng-container>
+        <ng-container *ngIf="form.controls['inventory'].hasError('min')">
+          Inventory must be a positive number
+        </ng-container>
+      </mat-error>
+
+    <button type="submit" class="saveButton" [disabled]="form.invalid">SAVE</button>
+  </form>
+</div>
