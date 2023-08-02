@@ -7,6 +7,7 @@ import { ItemComponent } from './components/item/item.component';
 import { AddItemModalComponent } from './components/add-item-modal/add-item-modal.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { CartComponent } from './pages/cart/cart.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { CartComponent } from './pages/cart/cart.component';
     ItemComponent,
     AddItemModalComponent,
     MenuComponent,
-    CartComponent
+    CartComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

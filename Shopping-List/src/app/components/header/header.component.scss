@@ -1,0 +1,22 @@
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+    box-shadow: 0 0 15px #0000001A;
+    padding: 18.5px 13.5px 17px 12.5px;
+}
+
+#hamburger-menu{
+    cursor: pointer;
+    div{
+        width: 24px;
+        height: 3px;
+        background-color: #a5abb3;
+        margin: 5px;
+    }
+}
+
+#logo{
+    height: 39px;
+}
