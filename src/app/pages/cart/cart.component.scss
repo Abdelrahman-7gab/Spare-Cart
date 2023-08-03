@@ -1,0 +1,23 @@
+.items-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.subheader{
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    width: 340px;
+    border-bottom: 1px solid #70707042;
+    font-size: 18px;
+    align-items: center;
+
+    .addProduct{
+        font-size: 35px;
+        font-weight: 300;
+        cursor: pointer;
+    }
+}

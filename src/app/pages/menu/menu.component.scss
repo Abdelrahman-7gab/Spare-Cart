@@ -1,14 +1,28 @@
-button{
-    width: 100px;
-    height: 30px;
-    background-color: black;
-    color: white;
-}
-
 .items-container{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 20px;
+}
+
+.subheader{
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    width: 340px;
+    border-bottom: 1px solid #70707042;
+    font-size: 18px;
+    align-items: center;
+
+    .title{
+        margin-bottom: -10px;
+    }
+
+    .addProduct{
+        font-size: 35px;
+        font-weight: 300;
+        margin-bottom: -10px;
+        cursor: pointer;
+    }
 }

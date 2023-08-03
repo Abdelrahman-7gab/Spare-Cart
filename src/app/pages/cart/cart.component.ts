@@ -27,4 +27,8 @@ export class CartComponent {
 
   }
 
+  clearCart() {
+    this.productsService.clearCart();
+  }
+
 }
