@@ -1,4 +1,7 @@
 <div id="full-app-container">
+
+  <img class="loader" src="assets/spinner.gif" *ngIf="isLoading$|async">
+
   <app-header></app-header>
   <div id="page-content">
     <router-outlet></router-outlet>

@@ -9,6 +9,7 @@ import { BehaviorSubject, Observable, map } from 'rxjs';
 export class ProductsService {
   private items$: BehaviorSubject<ItemModel[]>;
   private CartInfo$: Observable<CartInfoModel>;
+  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   public getItems$() {
     return this.items$.asObservable();
@@ -16,6 +17,20 @@ export class ProductsService {
 
   public getCartInfo$() {
     return this.CartInfo$;
+  }
+
+  public getLoading$() {
+
+    return this.loading.asObservable();
+
+  }
+
+  public updateDataWithDelay(items: ItemModel[]) {
+    this.loading.next(true);
+    setTimeout(() => {
+      this.items$.next(items);
+      this.loading.next(false);
+    }, 500);
   }
 
   public addItem(item: ItemModel) {
@@ -26,21 +41,21 @@ export class ProductsService {
       return;
     }
     items.push(item);
-    this.items$.next(items);
+    this.updateDataWithDelay(items);
   }
 
   public removeItem(item: ItemModel) {
     const items = this.items$.getValue();
     const index = items.findIndex((i) => i.id === item.id);
     items.splice(index, 1);
-    this.items$.next(items);
+    this.updateDataWithDelay(items);
   }
 
   public updateItem(item: ItemModel) {
     const items = this.items$.getValue();
     const index = items.findIndex((i) => i.id === item.id);
     items[index] = item;
-    this.items$.next(items);
+    this.updateDataWithDelay(items);
   }
 
   public addToCart(item: ItemModel) {
@@ -49,7 +64,7 @@ export class ProductsService {
     if (items[index].amountInStock > 0) {
       items[index].amountInStock--;
       items[index].amountInCart++;
-      this.items$.next(items);
+      this.updateDataWithDelay(items);
     } else {
       alert('There’s not enough of this item left in stock.');
     }
@@ -61,7 +76,7 @@ export class ProductsService {
     if (items[index].amountInCart > 0) {
       items[index].amountInStock++;
       items[index].amountInCart--;
-      this.items$.next(items);
+      this.updateDataWithDelay(items);
     }
   }
 
@@ -71,7 +86,7 @@ export class ProductsService {
       item.amountInStock = item.amountInStock + item.amountInCart;
       item.amountInCart = 0;
     });
-    this.items$.next(items);
+    this.updateDataWithDelay(items);
   }
 
   CartInfoSubscribtion() {
