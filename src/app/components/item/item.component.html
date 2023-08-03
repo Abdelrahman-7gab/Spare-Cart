@@ -1,4 +1,4 @@
-<div class="item" ngClass="{{item.amountInCart>0&&'addedInCart'}}">
+<div class="item" ngClass="{{item.amountInCart>0&&'addedInCart'}}" [@itemEnter]>
   <div class="img-container" (click)="editItemClicked()">
     <img [src]="item.photo" />
   </div>

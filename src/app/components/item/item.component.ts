@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { Input,Output,EventEmitter} from '@angular/core';
 import { ItemModel } from 'src/app/interfaces/ItemModel';
 import { ProductsService } from 'src/app/services/products.service';
+import { itemEnterAnimation } from './item.animations';
 
 @Component({
   selector: 'app-item',
   templateUrl: './item.component.html',
-  styleUrls: ['./item.component.scss']
+  styleUrls: ['./item.component.scss'],
+  animations: [itemEnterAnimation],
 })
 export class ItemComponent {
   @Input() item!: ItemModel;
