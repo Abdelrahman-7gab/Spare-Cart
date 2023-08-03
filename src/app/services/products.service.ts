@@ -9,8 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 export class ProductsService {
   private items$: BehaviorSubject<ItemModel[]>;
   private totalCartPrice$: BehaviorSubject<number>;
-  // a unique ID for each tab to identify which tab is the source of the local storage event
-  private tabID: string;
 
   public getItems$() {
     return this.items$.asObservable();
@@ -89,34 +87,31 @@ export class ProductsService {
   loadFromLocalStorage() {
     const data = localStorage.getItem('items');
     if (data) {
-      this.items$.next(JSON.parse(data).items);
+      this.items$.next(JSON.parse(data));
     }
   }
 
   syncWithLocalStorage() {
     this.items$.subscribe((items) => {
-      // add tab id to the items to check if the changes are made by the current tab
-      const data = { tabID: this.tabID, items: items };
 
       // check that the data is not already saved in local storage but with a different tab id to avoid an infinite loop
       const localData = localStorage.getItem('items');
       if (localData) {
-        const parsedData = JSON.parse(localData);
-        if (JSON.stringify(parsedData.items) === JSON.stringify(items)) {
+        const localStorageItems = JSON.parse(localData);
+        if (JSON.stringify(localStorageItems) === JSON.stringify(items)) {
           return;
         }
       }
 
-      localStorage.setItem('items', JSON.stringify(data));
+      localStorage.setItem('items', JSON.stringify(items));
     });
 
     // subscribe to changes in local storage in case of using multiple tabs
     window.addEventListener('storage', (event) => {
       if (event.key === 'items' && event.newValue) {
-        const data = JSON.parse(event.newValue);
-        if (data.tabID !== this.tabID) {
-          this.items$.next(data.items);
-        }
+        const items = JSON.parse(event.newValue);
+          this.items$.next(items);
+  
       }
     });
   }
@@ -124,7 +119,6 @@ export class ProductsService {
   constructor() {
     this.items$ = new BehaviorSubject<ItemModel[]>([]);
     this.totalCartPrice$ = new BehaviorSubject<number>(0);
-    this.tabID = uuidv4();
 
     // update total price when items change
     this.CartPriceSubscribtion();
