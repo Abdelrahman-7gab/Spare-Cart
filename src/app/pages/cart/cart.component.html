@@ -1,15 +1,23 @@
-<div class="items-container">
+<div class="menu">
+  <div class="items-container">
     <div class="subheader">
-      <span class="title"> Menu </span>
-  
+      <span class="title"> Cart </span>
+
       <span class="clearCart" (click)="clearCart()">
-    <img src="assets/trash.svg">    
-    </span>
+        <img src="assets/trash.svg" />
+      </span>
     </div>
-    
-    <app-item
-      *ngFor="let item of items$ | async"
-      [item]="item"
-    ></app-item>
+
+    <app-item *ngFor="let item of items$ | async" [item]="item"></app-item>
   </div>
-  
+
+  <div class="menuButtons" *ngIf="(cartInfo$ | async)!.totalPrice > 0">
+    <button class="viewCart" routerLink="/">
+      BACK
+    </button>
+
+    <button class="buy mainButton">
+      {{ "PAY " + (cartInfo$ | async)!.totalPrice + " EGP" }}
+    </button>
+  </div>
+</div>

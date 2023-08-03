@@ -1,13 +1,26 @@
-<div class="items-container">
-  <div class="subheader">
-    <span class="title"> Menu </span>
+<div class="menu">
+  <div class="items-container">
+    <div class="subheader">
+      <span class="title"> Menu </span>
 
-    <span class="addProduct" (click)="openAddItemModal(null)"> + </span>
+      <span class="addProduct" (click)="openAddItemModal(null)"> + </span>
+    </div>
+
+    <app-item
+      *ngFor="let item of items$ | async"
+      [item]="item"
+      (editItem)="openAddItemModal($event)"
+    ></app-item>
   </div>
-  
-  <app-item
-    *ngFor="let item of items$ | async"
-    [item]="item"
-    (editItem)="openAddItemModal($event)"
-  ></app-item>
+
+  <div class="menuButtons" *ngIf="(cartInfo$ | async)!.totalPrice > 0">
+    <button class="viewCart" routerLink="/cart">
+      <img src="assets/cart.svg" />
+      <span>{{ (cartInfo$ | async)!.cartSize }}</span>
+    </button>
+
+    <button class="buy mainButton">
+      {{ "PAY " + (cartInfo$ | async)!.totalPrice + " EGP" }}
+    </button>
+  </div>
 </div>

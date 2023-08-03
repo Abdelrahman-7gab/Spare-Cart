@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import { ItemModel } from '../interfaces/ItemModel';
-import { BehaviorSubject } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
+import { CartInfoModel } from '../interfaces/ItemModel';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
   private items$: BehaviorSubject<ItemModel[]>;
-  private totalCartPrice$: BehaviorSubject<number>;
+  private CartInfo$: Observable<CartInfoModel>;
 
   public getItems$() {
     return this.items$.asObservable();
   }
 
-  public getTotalCartPrice$() {
-    return this.totalCartPrice$.asObservable();
+  public getCartInfo$() {
+    return this.CartInfo$;
   }
 
-  public addItem(item: ItemModel) {;
+  public addItem(item: ItemModel) {
     const items = this.items$.getValue();
     // check if item id already exists in the list
     if (items.find((i) => i.id === item.id)) {
@@ -51,7 +51,7 @@ export class ProductsService {
       items[index].amountInCart++;
       this.items$.next(items);
     } else {
-      alert('There’s not enough of this item left.');
+      alert('There’s not enough of this item left in stock.');
     }
   }
 
@@ -74,14 +74,19 @@ export class ProductsService {
     this.items$.next(items);
   }
 
-  CartPriceSubscribtion() {
-    this.items$.subscribe((items) => {
-      const totalPrice = items.reduce(
-        (acc, item) => acc + item.price * item.amountInCart,
-        0
-      );
-      this.totalCartPrice$.next(totalPrice);
-    });
+  CartInfoSubscribtion() {
+    // update total price and total items number in cart
+    this.CartInfo$ = this.items$.pipe(
+      map((items) => {
+        const cartSize = items.filter((item) => item.amountInCart > 0).length;
+        const totalPrice = items.reduce((acc, item) => {
+          return acc + item.amountInCart * item.price;
+        }, 0);
+        return { cartSize, totalPrice };
+      }
+      )
+    );
+
   }
 
   loadFromLocalStorage() {
@@ -93,7 +98,6 @@ export class ProductsService {
 
   syncWithLocalStorage() {
     this.items$.subscribe((items) => {
-
       // check that the data is not already saved in local storage but with a different tab id to avoid an infinite loop
       const localData = localStorage.getItem('items');
       if (localData) {
@@ -110,18 +114,17 @@ export class ProductsService {
     window.addEventListener('storage', (event) => {
       if (event.key === 'items' && event.newValue) {
         const items = JSON.parse(event.newValue);
-          this.items$.next(items);
-  
+        this.items$.next(items);
       }
     });
   }
 
   constructor() {
     this.items$ = new BehaviorSubject<ItemModel[]>([]);
-    this.totalCartPrice$ = new BehaviorSubject<number>(0);
+    this.CartInfo$ = new Observable<CartInfoModel>();
 
     // update total price when items change
-    this.CartPriceSubscribtion();
+    this.CartInfoSubscribtion();
     // load items from local storage
     this.loadFromLocalStorage();
     // any changes to items will be saved to local storage and changes in other tabs will be synced

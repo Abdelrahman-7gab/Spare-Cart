@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ItemModel } from 'src/app/interfaces/ItemModel';
+import { CartInfoModel } from 'src/app/interfaces/ItemModel';
 import { ProductsService } from 'src/app/services/products.service';
 import { AddItemModalComponent } from 'src/app/components/add-item-modal/add-item-modal.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,11 +14,11 @@ import { MatDialog } from '@angular/material/dialog';
 export class MenuComponent {
 
   items$: Observable<ItemModel[]>;
-  totalPrice$: Observable<number>;
+  cartInfo$: Observable<CartInfoModel>;
   
   constructor(private productsService: ProductsService, public dialog: MatDialog) {
     this.items$ = this.productsService.getItems$();
-    this.totalPrice$ = this.productsService.getTotalCartPrice$();
+    this.cartInfo$ = this.productsService.getCartInfo$();
   }
 
   openAddItemModal(item: ItemModel | null) {

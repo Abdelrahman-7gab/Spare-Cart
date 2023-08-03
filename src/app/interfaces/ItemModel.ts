@@ -7,3 +7,8 @@ export interface ItemModel {
     amountInStock: number;
     amountInCart: number;
 }
+
+export interface CartInfoModel{
+totalPrice:number;
+cartSize:number;
+}
