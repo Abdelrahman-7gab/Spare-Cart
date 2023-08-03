@@ -11,12 +11,12 @@
     <app-item *ngFor="let item of items$ | async" [item]="item"></app-item>
   </div>
 
-  <div class="menuButtons" *ngIf="(cartInfo$ | async)!.totalPrice > 0">
+  <div class="menuButtons" >
     <button class="viewCart" routerLink="/">
       BACK
     </button>
 
-    <button class="buy mainButton">
+    <button class="buy mainButton" *ngIf="(cartInfo$ | async)!.totalPrice > 0">
       {{ "PAY " + (cartInfo$ | async)!.totalPrice + " EGP" }}
     </button>
   </div>
