@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ItemModel } from '../interfaces/ItemModel';
 import { CartInfoModel } from '../interfaces/ItemModel';
 import { BehaviorSubject, Observable, map } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +67,7 @@ export class ProductsService {
       items[index].amountInCart++;
       this.updateDataWithDelay(items);
     } else {
-      alert('There’s not enough of this item left in stock.');
+      this.toastr.error('Not enough of this item in stock', 'Error');
     }
   }
 
@@ -134,7 +135,7 @@ export class ProductsService {
     });
   }
 
-  constructor() {
+  constructor(private toastr: ToastrService) {
     this.items$ = new BehaviorSubject<ItemModel[]>([]);
     this.CartInfo$ = new Observable<CartInfoModel>();
 
