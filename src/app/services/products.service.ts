@@ -10,7 +10,19 @@ import { ToastrService } from 'ngx-toastr';
 export class ProductsService {
   private items$: BehaviorSubject<ItemModel[]>;
   private CartInfo$: Observable<CartInfoModel>;
-  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+
+
+    // update the view with data with a delay of 500ms, show a loading indicator
+  updateDataWithDelay(items: ItemModel[]) {
+    this.loading.next(true);
+    setTimeout(() => {
+      this.items$.next(items);
+      this.loading.next(false);
+    }, 500);
+  }
 
   public getItems$() {
     return this.items$.asObservable();
@@ -21,18 +33,9 @@ export class ProductsService {
   }
 
   public getLoading$() {
-
     return this.loading.asObservable();
-
   }
 
-  public updateDataWithDelay(items: ItemModel[]) {
-    this.loading.next(true);
-    setTimeout(() => {
-      this.items$.next(items);
-      this.loading.next(false);
-    }, 500);
-  }
 
   public addItem(item: ItemModel) {
     const items = this.items$.getValue();
@@ -42,13 +45,6 @@ export class ProductsService {
       return;
     }
     items.push(item);
-    this.updateDataWithDelay(items);
-  }
-
-  public removeItem(item: ItemModel) {
-    const items = this.items$.getValue();
-    const index = items.findIndex((i) => i.id === item.id);
-    items.splice(index, 1);
     this.updateDataWithDelay(items);
   }
 
@@ -99,10 +95,8 @@ export class ProductsService {
           return acc + item.amountInCart * item.price;
         }, 0);
         return { cartSize, totalPrice };
-      }
-      )
+      })
     );
-
   }
 
   loadFromLocalStorage() {
@@ -117,13 +111,10 @@ export class ProductsService {
       // check that the data is not already saved in local storage but with a different tab id to avoid an infinite loop
       const localData = localStorage.getItem('items');
       if (localData) {
-        const localStorageItems = JSON.parse(localData);
-        if (JSON.stringify(localStorageItems) === JSON.stringify(items)) {
-          return;
-        }
+        const ItemsString = JSON.stringify(items);
+        if (localData !== ItemsString)
+          localStorage.setItem('items', ItemsString);
       }
-
-      localStorage.setItem('items', JSON.stringify(items));
     });
 
     // subscribe to changes in local storage in case of using multiple tabs

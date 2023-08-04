@@ -11,17 +11,12 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./add-item-modal.component.scss'],
 })
 export class AddItemModalComponent {
-  productName: string;
-  price: number | null;
-  servingSize: string;
-  amountInStock: number | null;
-  amountInCart: number;
+  product: ItemModel;
   selectedImage: File | null = null;
-  photo: string | ArrayBuffer | null | undefined;
-  id: string;
-
   form: FormGroup;
   modalTitle = 'Add Item';
+  shownPrice: number | null;
+  shownInventory: number | null;
 
   englishPattern = /^(?!^\s*$)[a-zA-Z\s]+$/;
   numberPattern = /^[0-9]+$/;
@@ -32,23 +27,22 @@ export class AddItemModalComponent {
     @Inject(MAT_DIALOG_DATA) public data: ItemModel,
     public dialogRef: MatDialogRef<AddItemModalComponent>
   ) {
-    this.productName = data.name;
-    this.price = data.price;
-    this.servingSize = data.servingSize;
-    this.amountInStock = data.amountInStock;
-    this.amountInCart = data.amountInCart;
-    this.photo = data.photo;
-    this.id = data.id;
+    this.product = data;
 
-    if (this.id !== '') {
+    if (this.product.id !== '') {
       this.modalTitle = 'Edit Item';
-    }
-    else{
-      this.amountInStock = null;
-      this.price = null;
+      this.shownPrice = this.product.price;
+      this.shownInventory = this.product.amountInStock;
+    } else {
+      this.shownPrice = null;
+      this.shownInventory = null;
     }
 
-    this.form = this.fb.group({
+    this.form = this.createFormValidations();
+  }
+
+  createFormValidations(): FormGroup {
+    return this.fb.group({
       name: [
         '',
         [Validators.required, Validators.pattern(this.englishPattern)],
@@ -78,20 +72,16 @@ export class AddItemModalComponent {
       return;
     }
 
-    if (this.id === '') {
-      this.id = uuidv4();
+    if (this.product.id === '') {
+      this.product.id = uuidv4();
     }
 
-    const item: ItemModel = {
-      name: this.productName.trim(),
-      price: this.price || 0,
-      servingSize: this.servingSize.trim(),
-      amountInStock: this.amountInStock || 0,
-      amountInCart: this.amountInCart,
-      photo: this.photo,
-      id: this.id,
-    };
-    this.productsService.addItem(item);
+    this.product.name = this.product.name.trim();
+    this.product.servingSize = this.product.servingSize.trim();
+    this.product.price = this.shownPrice || 0;
+    this.product.amountInStock = this.shownInventory || 0;
+
+    this.productsService.addItem(this.product);
     this.closeModal();
   }
 
@@ -101,7 +91,7 @@ export class AddItemModalComponent {
 
     if (selectedFile) {
       const reader = new FileReader();
-      reader.onload = (e) => this.photo = e.target?.result;
+      reader.onload = (e) => (this.product.photo = e.target?.result);
       reader.readAsDataURL(selectedFile);
     }
   }
@@ -109,5 +99,4 @@ export class AddItemModalComponent {
   closeModal() {
     this.dialogRef.close();
   }
-
 }
