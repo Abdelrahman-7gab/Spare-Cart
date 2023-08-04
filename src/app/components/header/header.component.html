@@ -1,8 +1,21 @@
 <header>
-    <img src="../../../assets/logo.svg" alt="logo" id="logo">
+    <img src="../../../assets/logo.svg" alt="logo" id="logo" routerLink="/">
 
     <div id="hamburger-menu">
         <div></div>
         <div></div>
     </div>
+
+    <div class="cartOptions" *ngIf="(cartInfo$ | async)!.totalPrice > 0">
+        <button class="viewCart" routerLink="/cart">
+            <img src="assets/cart.svg" />
+            <span>{{ (cartInfo$ | async)!.cartSize }}</span>
+          </button>
+
+        <button class="buy mainButton">
+            {{ "PAY " + (cartInfo$ | async)!.totalPrice + " EGP" }}
+        </button>
+    </div>
+
+
 </header>

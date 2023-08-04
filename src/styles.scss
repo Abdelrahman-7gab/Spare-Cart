@@ -61,3 +61,19 @@ img{
   border: none;
   cursor: pointer;
 }
+
+.viewCart{
+  background-color: #383838;
+  border: none;
+  color: white;
+  border-radius: 26px;
+  width: 120px;
+  height: 52px;
+  font-size: 23px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}

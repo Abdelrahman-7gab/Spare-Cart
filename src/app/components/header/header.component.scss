@@ -20,4 +20,29 @@ header{
 
 #logo{
     height: 39px;
+    cursor: pointer;
 }
+
+.cartOptions{
+    display: none;
+}
+
+@media screen and (min-width: 769px) {
+
+    header{
+        width: 90%;
+        border-radius: 30px;
+        margin: 20px auto;
+    }
+
+    .cartOptions{
+        display: flex;
+        gap: 10px;
+    }
+
+    #hamburger-menu{
+        display: none;
+    }
+    
+}
+    

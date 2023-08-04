@@ -1,11 +1,11 @@
 .menu{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100%;
 }
 
 .items-container{
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -17,10 +17,11 @@
     font-weight: 600;
     display: flex;
     justify-content: space-between;
-    width: 340px;
+    width: 90%;
     border-bottom: 1px solid #70707042;
     font-size: 18px;
     align-items: center;
+    place-self: center;
 
     .title{
         margin-bottom: -10px;
@@ -39,26 +40,51 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    margin: 30px 0 10px 0;
-}
-
-.viewCart{
-    background-color: #383838;
-    border: none;
-    color: white;
-    border-radius: 26px;
-    width: 120px;
-    height: 52px;
-    font-size: 23px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    font-weight: 600;
-    cursor: pointer;
+    margin: auto 0 10px 0;
 }
 
 .buy{
     width: 215px;
     border-radius: 26px;
+}
+
+app-item{
+    width: 90%;
+    display: grid;
+    place-items: center;
+}
+
+@media screen and (min-width: 769px) {
+
+    .menu{
+        margin-top: 20px;
+    }
+
+    .items-container{
+        display: grid;
+        grid-template-columns: repeat(auto-fit,320px);
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .menuButtons{
+        display: none;
+    }
+
+    .subheader{
+        width: 88%;
+        font-size: 30px;
+        .addProduct{
+            font-size: 55px;
+        }
+    }
+
+    .clearCart{
+        img{
+            height: 35px;
+            margin-bottom: -5px;
+        }
+    }
+
+
 }

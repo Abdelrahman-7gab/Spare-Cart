@@ -1,10 +1,11 @@
 <div class="menu">
-  <div class="items-container">
-    <div class="subheader">
-      <span class="title"> Menu </span>
+  <div class="subheader">
+    <span class="title"> Menu </span>
 
-      <span class="addProduct" (click)="openAddItemModal(null)"> + </span>
-    </div>
+    <span class="addProduct" (click)="openAddItemModal(null)"> + </span>
+  </div>
+  
+  <div class="items-container">
 
     <app-item
       *ngFor="let item of items$ | async"

@@ -1,12 +1,20 @@
 <div class="menu">
-  <div class="items-container">
-    <div class="subheader">
-      <span class="title"> Cart </span>
 
-      <span class="clearCart" (click)="clearCart()">
-        <img src="assets/trash.svg" />
-      </span>
-    </div>
+  <div class="subheader">
+    <span class="title">
+      
+      <img class="back" src="assets/back.png" routerLink="/">
+
+      Cart 
+
+    </span>
+
+    <span class="clearCart" (click)="clearCart()">
+      <img src="assets/trash.svg" />
+    </span>
+  </div>
+  
+  <div class="items-container">
 
     <app-item *ngFor="let item of items$ | async" [item]="item"></app-item>
   </div>
