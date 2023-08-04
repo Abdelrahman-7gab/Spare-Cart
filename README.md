@@ -1,8 +1,10 @@
 # Shopping List
-![image](https://github.com/Abdelrahman-7gab/Shopping-List/assets/63824808/a1cf025f-2fb9-43fd-9941-daae170aa173)
-![image](https://github.com/Abdelrahman-7gab/Shopping-List/assets/63824808/70b676d9-fcca-4735-96eb-f4412cf08032)
+![image](https://github.com/Abdelrahman-7gab/Shopping-List/assets/63824808/1ba8545e-6f8d-439b-b948-b0a82675a226)
 
-##Features
+![image](https://github.com/Abdelrahman-7gab/Shopping-List/assets/63824808/b839a144-0d76-4d06-afc1-301a842a0df3)
+
+
+## Features
 - Fully Responsive design
 - Reactive coding style using Services + RXJS Pattern
 - Syncing data between different tabs.
