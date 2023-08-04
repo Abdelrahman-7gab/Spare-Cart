@@ -108,13 +108,16 @@ export class ProductsService {
 
   syncWithLocalStorage() {
     this.items$.subscribe((items) => {
-      // check that the data is not already saved in local storage but with a different tab id to avoid an infinite loop
+      const ItemsString = JSON.stringify(items);
       const localData = localStorage.getItem('items');
-      if (localData) {
-        const ItemsString = JSON.stringify(items);
-        if (localData !== ItemsString)
+      
+      if (localData && localData !== ItemsString) {
           localStorage.setItem('items', ItemsString);
       }
+      else if (!localData) {
+        localStorage.setItem('items', JSON.stringify(items));
+      }
+
     });
 
     // subscribe to changes in local storage in case of using multiple tabs
