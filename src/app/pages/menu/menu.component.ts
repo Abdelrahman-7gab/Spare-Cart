@@ -36,7 +36,8 @@ export class MenuComponent {
 
     const dialogRef = this.dialog.open(AddItemModalComponent, {
       width: '332px',
-      data: item
+      data: item,
+      maxHeight: '80vh'
     });
   }
 
