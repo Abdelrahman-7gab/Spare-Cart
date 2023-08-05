@@ -111,11 +111,9 @@ export class ProductsService {
       const ItemsString = JSON.stringify(items);
       const localData = localStorage.getItem('items');
       
-      if (localData && localData !== ItemsString) {
+      // if local data is emoty or not the same as current Items array
+      if (!localData || (localData && localData !== ItemsString)) {
           localStorage.setItem('items', ItemsString);
-      }
-      else if (!localData) {
-        localStorage.setItem('items', JSON.stringify(items));
       }
 
     });
